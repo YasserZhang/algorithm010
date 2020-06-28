@@ -24,3 +24,32 @@ public void recur(int level, int param) {
 ####BFS vs. DFS
 尝试分别用BFS和DFS解同一道题，结果总是DFS远快于BFS。虽然没有做更深入的研究，但我觉得这主要是因为BFS需要在堆中新开一个queue导致其运行速度不如DFS。
 而DFS可以在栈内搞定所有运算。
+
+#### Divide and Conquer
+```python
+# Python
+def divide_conquer(problem, param1, param2, ...): 
+  # recursion terminator 
+  if problem is None: 
+	print_result 
+	return 
+  # prepare data 
+  data = prepare_data(problem) 
+  subproblems = split_problem(problem, data) 
+  # conquer subproblems 
+  subresult1 = self.divide_conquer(subproblems[0], p1, ...) 
+  subresult2 = self.divide_conquer(subproblems[1], p1, ...) 
+  subresult3 = self.divide_conquer(subproblems[2], p1, ...) 
+  …
+  # process and generate the final result 
+  result = process_result(subresult1, subresult2, subresult3, …)
+	
+  # revert the current level states
+```
+
+#### Backtracking
+心得：  
+一般回溯方法可以用于求某个集合的所有排列方式或者所有子集。  
+当我们穷举出所有情况以后，我们会发现这么一个特点：
+在任何一种情况（或者说子集）中，集合中的每一个元素，其实就两种状态：要么它存在于这种情况（子集）中；要么它不存在。
+顺着这个思路，我们用递归遍历所有元素，对每个元素，我们先考虑它不存在的场景，然后再考虑它存在时的场景。这样即可穷举所有情况。
