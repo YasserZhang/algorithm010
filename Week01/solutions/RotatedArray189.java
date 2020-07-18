@@ -57,6 +57,9 @@ class Solution {
         }
     }*/
 
+/*    Success:
+    Runtime:1 ms, faster than 50.36% of Java online submissions.
+    Memory Usage:42.2 MB, less than 14.65% of Java online submissions.*/
     public void rotate(int[] nums, int k) {
         k = k % nums.length;
         int count = 0;
