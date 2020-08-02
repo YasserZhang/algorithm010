@@ -28,3 +28,198 @@ output：
 1111 1111 - 1111 1111 -- 1111 1111 - 1111 1001
 0000 0000 - 0000 0000 -- 0000 0000 - 0000 0001
 ```
+
+#### QuickSort
+
+```java
+
+public class QuickSort {
+    public static void quickSort(int[] array, int start, int end) {
+        if (end <= start) return;
+        int pivot = partition(array, start, end);
+        quickStart(array, start, pivot-1);
+        quickStart(array, pivot+1, end);
+}
+    public static void partition(int[] array, int start, int end) {
+        int pivot = end;
+        int counter = start;
+        for (int i = start; i < end; ++i) {
+            if (array[i] <= array[pivot]) {
+                int temp = array[counter];
+                array[counter++] = array[i];
+                array[i] = temp;
+            }
+        }
+        int temp = array[pivot];
+        array[pivot] = array[counter];
+        array[counter] = temp;
+        return counter;
+}
+
+}
+```
+
+generic version
+```java
+public class QuickSort {
+
+    public static <T> void quickSort(T[] array, int start, int end, Comparator<T> comparator) {
+        if (end <= start) return;
+        int pivot = partition(array, start, end, comparator);
+        quickSort(array, start, pivot-1, comparator);
+        quickSort(array, pivot+1, end, comparator);
+}
+    private static int partition(T[] array, int start, int end, Comparator<T> comparator) {
+        int pivot = end;
+        int counter = start;
+        for (int i = start; i < end; ++i) {
+            if (comparator.compare(array[i], array[pivot]) < 0) {
+                T temp = array[counter];
+                array[counter++] = array[i];
+                array[i] = temp;
+            }
+        }
+        T temp = array[pivot];
+        array[pivot] = array[counter];
+        array[counter] = temp;
+        return counter;
+}
+    private static class Pair {
+        int a;
+        int b;
+        public Pair(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "a=" + a +
+                    ", b=" + b +
+                    '}';
+        }
+    }
+
+    public static void main(String[] args) {
+        Pair[] pairs = new Pair[5];
+        pairs[0] = new Pair(9,0);
+        pairs[1] = new Pair(1,5);
+        pairs[2] = new Pair(-2,8);
+        pairs[3] = new Pair(10,-3);
+        pairs[4] = new Pair(3,-6);
+        Comparator<Pair> comparator = new Comparator<Pair>() {
+            @Override
+            public int compare(Pair o1, Pair o2) {
+                return o1.a - o2.a;
+            }
+        };
+        quickSort(pairs, 0, pairs.length-1, comparator);
+        Arrays.asList(pairs).forEach(System.out::println);
+    }
+}
+```
+
+#### Merge Sort
+```java
+public class MergeSort {
+
+    public static void mergeSort(int[] array, int start, int end) {
+        if (end <= start) return;
+        int mid = (start + end) >> 1;
+        mergeSort(array, start, mid);
+        mergeSort(array, mid+1, end);
+        merge(array, start, mid, end);
+}
+
+    public static void merge(int[] array, int start, int mid, int end) {
+        int i = start;
+        int j = mid + 1;
+        int k = 0;
+        int[] temp = new int[end - start + 1];
+        while ( i <= mid && j <= end) {
+            temp[k++] = array[i] <= array[j] ? array[i++] : array[j++];
+        }
+        
+        while (i <= mid) temp[k++] = array[i++];
+        while (j <= end) temp[k++] = array[j++];
+        
+        System.arraycopy(temp, 0, array, start, temp.length);
+}
+}
+```
+
+generic merge sort
+
+```java
+
+public class MergeSort {
+    public static <T> void mergeSort(T[] array, int start, int end, Comparator<T> comparator) {
+        if (end <= start) return;
+        int mid = (start + end) >> 1;
+        mergeSort(array, start, mid, comparator);
+        mergeSort(array, mid+1, end, comparator);
+        merge(array, start, mid, end, comparator);
+}
+
+    private static <T> void merge(T[] array, int start, int mid, int end, Comparator<T> comparator) {
+        int i = start, j = mid+1, k = 0;
+        T[] temp = (T[]) new Object[right - left + 1];
+        while ( i <= mid && j <= end) {
+            temp[k++] = comparator.compare(array[i], array[j]) <= 0 ? array[i++] : array[j++];
+        }
+        while (i <= mid) temp[k++] = array[i++];
+        while (j <= end) temp[k++] = array[j++];
+        System.arraycopy(temp, 0, array, start, temp.length);
+    }
+
+    private static class Pair {
+        int a;
+        int b;
+        public Pair(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "a=" + a +
+                    ", b=" + b +
+                    '}';
+        }
+    }
+
+    public static void main(String[] args) {
+        //List<Integer>[] lists = new List[5];
+        //lists[0] = new ArrayList<>();
+        //lists[0].add("hello");
+        Pair[] pairs = new Pair[10];
+        pairs[0] = new Pair(9,0);
+        pairs[1] = new Pair(1,5);
+        pairs[2] = new Pair(-2,8);
+        pairs[3] = new Pair(10,-3);
+        pairs[4] = new Pair(3,-6);
+        pairs[5] = new Pair(3,-6);
+        pairs[6] = new Pair(13,-6);
+        pairs[7] = new Pair(3,-6);
+        pairs[8] = new Pair(3,-6);
+        pairs[9] = new Pair(3,-6);
+        Comparator<Pair> comparator = new Comparator<Pair>() {
+            @Override
+            public int compare(Pair o1, Pair o2) {
+                return o1.a - o2.a;
+            }
+        };
+        mergeSort(pairs, 0, pairs.length-1, comparator);
+        Arrays.asList(pairs).forEach(System.out::println);
+    }
+
+
+}
+
+
+
+
+
+```
