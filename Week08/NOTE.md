@@ -37,8 +37,8 @@ public class QuickSort {
     public static void quickSort(int[] array, int start, int end) {
         if (end <= start) return;
         int pivot = partition(array, start, end);
-        quickStart(array, start, pivot-1);
-        quickStart(array, pivot+1, end);
+        quickSort(array, start, pivot-1);
+        quickSort(array, pivot+1, end);
 }
     public static void partition(int[] array, int start, int end) {
         int pivot = end;
